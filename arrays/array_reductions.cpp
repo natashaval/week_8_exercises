@@ -17,14 +17,18 @@ int main()
     }
 
     const int bins = 101;
-    int histogram[101];
-    
-    for(int i = 0; i < bins; i++)
-    {
-        histogram[i] = 0;
-    }
+    // int histogram[101];
+    std::vector<int> histogram(bins, 0);
+    // for(int i = 0; i < bins; i++)
+    // {
+    //     histogram[i] = 0;
+    // }
 
-#pragma omp parallel for reduction(+:histogram[:bins])
+// #pragma omp parallel for reduction(+:histogram[:bins])
+#pragma omp parallel
+{
+    std::vector<int> sum_tmp(bins, 0); // partial histogram
+    #pragma omp for // split into parallel region of FOR
     for(int i = 0; i < N; i++)
     {
         double x = rand_list[i];
@@ -34,8 +38,20 @@ int main()
         }
 
         int idx = static_cast<int>(((x + 3) / 6) * bins);
-        histogram[idx]++;
+        // histogram[idx]++;
+        sum_tmp[idx]++;
     }
+
+    // A similar construct is critical, which guarantees that threads will only run the code in the construct one at a time, i.e. sequentially.
+    #pragma omp critical
+    {
+        for (int i = 0; i < bins; i++)
+        {
+            histogram[i] += sum_tmp[i];
+        }
+    }
+}
+// PRAGMA PARALLEL REGION ENDS HERE
 
     for(int i = 0; i < bins; i++)
     {

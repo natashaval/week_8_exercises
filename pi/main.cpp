@@ -10,13 +10,14 @@ using std::chrono::milliseconds;
 int main() {
 
   const int N = 50000000;
+  const int scale = 16;
   double dx = 1.0f/N;
 
   auto start = high_resolution_clock::now();
 
   double sum = 0.0f;
-  #pragma omp parallel for
-  for(int i=0; i<N; ++i) {
+  #pragma omp parallel for reduction(+:sum)
+  for(int i=0; i<scale*N; ++i) {
     double x = i*dx;
     sum += 4.0f/(1.0f + x*x)*dx;
   }

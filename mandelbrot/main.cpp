@@ -8,6 +8,15 @@ using std::chrono::high_resolution_clock;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 
+// https://github-pages.ucl.ac.uk/research-computing-with-cpp/08openmp/03_fractal_example.html
+/*
+Run serially to check the area is approximately 1.5 and the error is less than 0.01.
+
+Serialize time:
+Area of Mandlebrot set = 1.51309
+Error = 0.00660375
+Time = 12282 ms
+*/
 int main() {
 
   const int NPOINTS = 1024;
@@ -27,6 +36,27 @@ int main() {
   auto start = high_resolution_clock::now();
 
   // Iterate over entire domain
+  # pragma omp parallel for private(z, c) reduction(+:n_outside) collapse(2)
+  /*
+for private(z, c)
+Area of Mandlebrot set = 1.7161
+Error = 0.209615
+Time = 2128 ms
+  */
+
+ /*
+ reduction(+:n_outside)
+ Area of Mandlebrot set = 1.51309
+Error = 0.00660375
+Time = 2062 ms
+ */
+
+/*
+collapse(2)
+Area of Mandlebrot set = 1.51309
+Error = 0.00660375
+Time = 2015 ms
+*/
   for(int i=0; i<NPOINTS; ++i) 
   {
     for(int j=0; j<NPOINTS; ++j) 

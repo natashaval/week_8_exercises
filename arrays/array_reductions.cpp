@@ -24,10 +24,13 @@ int main()
     //     histogram[i] = 0;
     // }
 
+std::vector<int> sum_tmp(bins, 0);
 // #pragma omp parallel for reduction(+:histogram[:bins])
-#pragma omp parallel
+// PRIVATE = copies the variable but unitialised -> therefore segmentation fault sum_tmp[idx]
+// FIRSTPRIVATE = copies the variable and initialised -> WORKING
+#pragma omp parallel firstprivate(sum_tmp)
 {
-    std::vector<int> sum_tmp(bins, 0); // partial histogram
+    // std::vector<int> sum_tmp(bins, 0); // partial histogram
     #pragma omp for // split into parallel region of FOR
     for(int i = 0; i < N; i++)
     {

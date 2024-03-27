@@ -1,7 +1,8 @@
 # week_8_exercises
 
-[UCL Week 8](https://github-pages.ucl.ac.uk/research-computing-with-cpp/08openmp/02_intro_openmp.html)
-[HackMd Week 8](https://hackmd.io/@comp0210-cpp-redesign/r154oOuTp)
+[UCL Week 8](https://github-pages.ucl.ac.uk/research-computing-with-cpp/08openmp/02_intro_openmp.html)  
+[HackMd Week 8](https://hackmd.io/@comp0210-cpp-redesign/r154oOuTp)  
+[Week 8 Solution](https://moodle.ucl.ac.uk/mod/url/view.php?id=6026769)  
 
 Section 1
 
